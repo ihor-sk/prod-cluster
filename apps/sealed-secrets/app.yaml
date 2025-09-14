@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: kube-system
   source:
-    repoURL: https://github.com/YourOrg/your-gitops-repo.git
+    repoURL: git@github.com:ihor-sk/prod-cluster.git
     targetRevision: main
     path: apps/sealed-secrets
     helm:
