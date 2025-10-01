@@ -1,22 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crunchy-postgres-operator
+  name: istio-base
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/CrunchyData/postgres-operator-examples.git
-    path: helm/install
-    targetRevision: HEAD
+    repoURL: https://istio-release.storage.googleapis.com/charts
+    chart: base
+    targetRevision: 1.27.1
+    helm:
+      releaseName: istio-base
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: pgo
+    namespace: istio-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+      allowEmpty: false
     syncOptions:
       - Replace=true
       - Validate=false
+      - RespectResourceOrder=true
       - CreateNamespace=true
