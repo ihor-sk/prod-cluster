@@ -14,10 +14,9 @@ spec:
     helm:
       releaseName: istio-ingress
       valuesObject:
-        defaults:
-          service:
-            annotations:
-              service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+        service:
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: istio-ingress
