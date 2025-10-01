@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: rabbitmq-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/rabbitmq/cluster-operator.git
+    targetRevision: HEAD
+    path: config/installation
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: rabbitmq-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - Replace=true
+      - Validate=false
+      - CreateNamespace=true
