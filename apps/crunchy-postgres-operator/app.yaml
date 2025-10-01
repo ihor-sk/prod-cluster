@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: crunchy-postgres-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/CrunchyData/postgres-operator-examples.git
+    path: helm/install
+    targetRevision: HEAD
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: pgo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - Replace=true
+      - Validate=false
+      - CreateNamespace=true
