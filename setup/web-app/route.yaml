@@ -12,7 +12,7 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - "a7077c113ef1e499eaad4f442a0c7bc1-b8352132fa7ca273.elb.us-east-1.amazonaws.com"
+        - "test.librelab.online"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -21,7 +21,7 @@ metadata:
   namespace: default
 spec:
   hosts:
-    - "a7077c113ef1e499eaad4f442a0c7bc1-b8352132fa7ca273.elb.us-east-1.amazonaws.com"
+    - "test.librelab.online"
   gateways:
     - nginx-hello-gateway
   http:
