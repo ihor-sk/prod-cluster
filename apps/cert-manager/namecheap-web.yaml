@@ -9,9 +9,11 @@ spec:
     server: https://kubernetes.default.svc
     namespace: cert-manager
   source:
-    repoURL: https://kelvie.github.io/cert-manager-webhook-namecheap
-    chart: cert-manager-webhook-namecheap
-    targetRevision: "0.1.2"
+    repoURL: https://github.com/kelvie/cert-manager-webhook-namecheap
+    targetRevision: master
+    path: deploy/cert-manager-webhook-namecheap
+    helm:
+      releaseName: namecheap-webhook
   syncPolicy:
     automated:
       prune: true
