@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: namecheap-webhook
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  source:
+    repoURL: https://kelvie.github.io/cert-manager-webhook-namecheap
+    chart: cert-manager-webhook-namecheap
+    targetRevision: "0.1.2"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
