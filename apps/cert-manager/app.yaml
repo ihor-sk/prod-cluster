@@ -5,22 +5,20 @@ metadata:
   namespace: argocd
 spec:
   project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
   source:
-    repoURL: https://charts.jetstack.io
     chart: cert-manager
+    repoURL: https://charts.jetstack.io
     targetRevision: v1.18.2
     helm:
       parameters:
         - name: crds.enabled
           value: "true"
-    server: "https://kubernetes.default.svc"
-    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-      allowEmpty: false
     syncOptions:
-      - Replace=true
-      - Validate=false
       - CreateNamespace=true
