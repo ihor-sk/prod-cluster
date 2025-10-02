@@ -19,7 +19,8 @@ metadata:
   namespace: default
 spec:
   selector:
-    istio: ingressgateway
+    app: istio-ingress
+    istio: ingress
   servers:
     - hosts:
         - "test.librelab.online"
