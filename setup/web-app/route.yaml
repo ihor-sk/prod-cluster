@@ -8,7 +8,7 @@ spec:
   dnsNames:
     - test.librelab.online
   issuerRef:
-    name: staging-cluster-issuer
+    name: letsencrypt-stage
     kind: ClusterIssuer
     group: cert-manager.io
 ---
