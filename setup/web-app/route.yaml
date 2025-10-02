@@ -45,6 +45,6 @@ spec:
   http:
     - route:
         - destination:
-            host: nginx-hello
+            host: nginx-hello.default.svc.cluster.local
             port:
               number: 80
