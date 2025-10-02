@@ -1,3 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-hello
+  namespace: default
+spec:
+  secretName: nginx-hello-stage-cert-tls
+  dnsNames:
+    - test.librelab.online
+  issuerRef:
+    name: staging-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -5,14 +19,17 @@ metadata:
   namespace: default
 spec:
   selector:
-    istio: ingressgateway   # use Istio’s ingress gateway
+    istio: ingressgateway
   servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
+    - hosts:
         - "test.librelab.online"
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: nginx-hello-stage-cert-tls
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
