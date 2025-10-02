@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: nginx-hello-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway   # use Istio’s ingress gateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "nginx-hello.local"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nginx-hello-vs
+  namespace: default
+spec:
+  hosts:
+    - "nginx-hello.local"
+  gateways:
+    - nginx-hello-gateway
+  http:
+    - route:
+        - destination:
+            host: nginx-hello
+            port:
+              number: 80
