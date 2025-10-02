@@ -22,12 +22,15 @@ spec:
     app: istio-ingress
     istio: ingress
   servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
+    - hosts:
         - "test.librelab.online"
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: nginx-hello-stage-cert-tls
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
