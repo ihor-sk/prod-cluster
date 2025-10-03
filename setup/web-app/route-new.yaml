@@ -1,0 +1,49 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: test-ewebsystems
+  namespace: default
+spec:
+  secretName: test-ewebsystems
+  dnsNames:
+    - test.ewebsystems.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-route53
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: nginx-ewebsystems
+  namespace: default
+spec:
+  selector:
+    app: istio-ingress
+    istio: ingress
+  servers:
+    - hosts:
+        - "test.ewebsystems.net"
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: test-ewebsystems
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: nginx-ewebsystems
+  namespace: default
+spec:
+  hosts:
+    - "test.ewebsystems.net"
+  gateways:
+    - nginx-ewebsystems
+  http:
+    - route:
+        - destination:
+            host: nginx-hello.default.svc.cluster.local
+            port:
+              number: 80
