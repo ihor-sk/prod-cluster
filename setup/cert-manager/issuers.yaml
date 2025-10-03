@@ -50,3 +50,25 @@ spec:
               apiUserSecretRef:
                 name: namecheap-credentials
                 key: apiUser
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-route53
+spec:
+  acme:
+    email: admin@ewebsystems.net
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-route53
+    solvers:
+      - selector:
+          dnsZones:
+            - "ewebsystems.net"
+        dns01:
+          route53:
+            region: us-east-1
+            accessKeyID: "AKIA4BIQSU3H5V2CGYXY"
+            secretAccessKeySecretRef:
+              name: route53-credentials-secret
+              key: secret-access-key
