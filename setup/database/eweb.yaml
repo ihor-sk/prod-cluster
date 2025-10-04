@@ -1,0 +1,38 @@
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: eweb
+  namespace: eweb
+spec:
+  postgresVersion: 17
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        pg_hba:
+          - local     all  all  trust
+          - host      all  all  0.0.0.0/0   md5
+          - host      all  all  ::1/128     md5
+  users:
+    - name: eweb
+      databases:
+        - eweb
+      options: "SUPERUSER"
+  instances:
+    - replicas: 1
+      dataVolumeClaimSpec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 5Gi
+  backups:
+    pgbackrest:
+      repos:
+        - name: repo1
+          volume:
+            volumeClaimSpec:
+              accessModes:
+                - "ReadWriteOnce"
+              resources:
+                requests:
+                  storage: 5Gi
