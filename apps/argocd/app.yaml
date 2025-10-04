@@ -3,26 +3,15 @@ kind: Application
 metadata:
   name: argocd
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: default
   source:
-    repoURL: https://argoproj.github.io/argo-helm
-    chart: argo-cd
-    targetRevision: 8.5.8
-    helm:
-      valuesObject:
-        server:
-          extraArgs:
-            - --insecure
-          service:
-            type: ClusterIP
-        ingress:
-          enabled: false
+    repoURL: git@github.com:ihor-sk/prod-cluster.git
+    targetRevision: main
+    path: setup/argocd
   syncPolicy:
     automated:
       prune: true
