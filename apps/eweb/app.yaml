@@ -14,7 +14,7 @@ spec:
     path: charts/tenant-app
     helm:
       valueFiles:
-        - ../values/values.yaml
+        - values/values.yaml
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: [ CreateNamespace=true ]
