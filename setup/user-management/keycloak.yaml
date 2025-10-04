@@ -17,6 +17,6 @@ spec:
       name: user-management-pguser-keycloak
       key: password
   hostname:
-    hostname: user-management.ems-customer.com
+    hostname: user-management.ewebsystems.net
   proxy:
     headers: xforwarded

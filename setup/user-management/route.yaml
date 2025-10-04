@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: user-management
+  namespace: user-management
+spec:
+  hosts:
+    - "user-management.ewebsystems.net"
+  gateways:
+    - istio-ingress/main-gateway
+  http:
+    - route:
+        - destination:
+            host: user-management-service.user-management.svc.cluster.local
+            port:
+              number: 8080
