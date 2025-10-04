@@ -55,39 +55,6 @@ spec:
     - port: 80
       targetPort: 80
 ---
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: test-ewebsystems
-  namespace: istio-ingress
-spec:
-  secretName: test-ewebsystems
-  dnsNames:
-    - test.ewebsystems.net
-  issuerRef:
-    kind: ClusterIssuer
-    name: route53-letsencrypt-stage
----
-apiVersion: networking.istio.io/v1beta1
-kind: Gateway
-metadata:
-  name: nginx-ewebsystems
-  namespace: istio-ingress
-spec:
-  selector:
-    app: istio-ingress
-    istio: ingress
-  servers:
-    - hosts:
-        - "test.ewebsystems.net"
-      port:
-        name: https
-        number: 443
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        credentialName: test-ewebsystems
----
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -97,7 +64,7 @@ spec:
   hosts:
     - "test.ewebsystems.net"
   gateways:
-    - istio-ingress/nginx-ewebsystems
+    - istio-ingress/main-gateway
   http:
     - route:
         - destination:
