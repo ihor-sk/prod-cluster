@@ -20,16 +20,3 @@ spec:
             secretAccessKeySecretRef:
               name: aws-credentials-secret
               key: secret-access-key
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: wildcard-stage
-  namespace: istio-ingress
-spec:
-  secretName: stage-ewebsystems
-  dnsNames:
-    - "*.ewebsystems.net"
-  issuerRef:
-    kind: ClusterIssuer
-    name: route53-letsencrypt-stage
