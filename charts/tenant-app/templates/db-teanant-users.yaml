@@ -1,0 +1,13 @@
+{{- $full := include "mychart.fullname" . -}}
+{{- range $i, $t := .Values.tenants }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ printf "%s-%s-db-user" $full $t.name | quote }}
+  labels: {{- include "mychart.labels" $ | nindent 4 }}
+type: Opaque
+stringData:
+  username: {{ printf "%s-user" $t.name | quote }}
+  password: {{ include "mychart.tenantPassword" (dict "ns" $.Release.Namespace "full" $full "tenant" $t.name "len" 32) | quote }}
+---
+{{- end }}

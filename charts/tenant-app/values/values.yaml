@@ -3,7 +3,7 @@ global:
   oauth: user-management.ems-customer.com
   backend: api.emotions.com.se
   namespace: eweb
-
+    
 tenants:
   - name: foo
   - name: bar
