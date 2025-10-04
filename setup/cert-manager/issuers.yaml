@@ -33,23 +33,3 @@ spec:
   issuerRef:
     kind: ClusterIssuer
     name: route53-letsencrypt-stage
----
-apiVersion: networking.istio.io/v1beta1
-kind: Gateway
-metadata:
-  name: main-gateway
-  namespace: istio-ingress
-spec:
-  selector:
-    app: istio-ingress
-    istio: ingress
-  servers:
-    - hosts:
-        - "*.ewebsystems.net"
-      port:
-        name: https
-        number: 443
-        protocol: HTTPS
-      tls:
-        mode: SIMPLE
-        credentialName: stage-ewebsystems

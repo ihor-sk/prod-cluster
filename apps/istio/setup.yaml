@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: user-management
+  name: cert-setup
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   project: default
   destination:
@@ -13,10 +13,8 @@ spec:
   source:
     repoURL: git@github.com:ihor-sk/prod-cluster.git
     targetRevision: main
-    path: setup/user-management
+    path: setup/ingress
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
