@@ -7,3 +7,4 @@ global:
 tenants:
   - name: foo
   - name: bar
+  - name: test
