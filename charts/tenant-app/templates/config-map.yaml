@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-hello-html
+  namespace: {{ .Values.global.namespace }}
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Hello from NGINX</title>
+    </head>
+    <body>
+      <h1>Hello World from NGINX served through Istio 🚀</h1>
+    </body>
+    </html>

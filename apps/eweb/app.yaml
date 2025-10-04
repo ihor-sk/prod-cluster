@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eweb
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: eweb
+  source:
+    repoURL: git@github.com:ihor-sk/prod-cluster.git
+    targetRevision: main
+    path: charts/tenant-app
+    helm:
+      valueFiles:
+        - ../../values/values.yaml
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [ CreateNamespace=true ]
