@@ -1,47 +1,103 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: nginx-hello
   namespace: default
 spec:
-  secretName: nginx-hello-stage-cert-tls
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-hello
+  template:
+    metadata:
+      labels:
+        app: nginx-hello
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:stable-alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: html
+          configMap:
+            name: nginx-hello-html
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-hello-html
+  namespace: default
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Hello from NGINX</title>
+    </head>
+    <body>
+      <h1>Hello World from NGINX served through Istio 🚀</h1>
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-hello
+  namespace: default
+spec:
+  selector:
+    app: nginx-hello
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: test-ewebsystems
+  namespace: istio-ingress
+spec:
+  secretName: test-ewebsystems
   dnsNames:
-    - test.librelab.online
+    - test.ewebsystems.net
   issuerRef:
-    name: letsencrypt-stage
     kind: ClusterIssuer
-    group: cert-manager.io
+    name: letsencrypt-route53
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: nginx-hello-gateway
-  namespace: default
+  name: nginx-ewebsystems
+  namespace: istio-ingress
 spec:
   selector:
     app: istio-ingress
     istio: ingress
   servers:
     - hosts:
-        - "test.librelab.online"
+        - "test.ewebsystems.net"
       port:
         name: https
         number: 443
         protocol: HTTPS
       tls:
         mode: SIMPLE
-        credentialName: nginx-hello-stage-cert-tls
+        credentialName: test-ewebsystems
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: nginx-hello-vs
+  name: nginx-ewebsystems
   namespace: default
 spec:
   hosts:
-    - "test.librelab.online"
+    - "test.ewebsystems.net"
   gateways:
-    - nginx-hello-gateway
+    - istio-ingress/nginx-ewebsystems
   http:
     - route:
         - destination:

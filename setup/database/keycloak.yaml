@@ -1,0 +1,22 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: user-management
+  namespace: user-management
+spec:
+  instances: 1
+  http:
+    httpEnabled: true
+  db:
+    vendor: postgres
+    host: user-management-primary.user-management.svc
+    usernameSecret:
+      name: user-management-pguser-keycloak
+      key: user
+    passwordSecret:
+      name: user-management-pguser-keycloak
+      key: password
+  hostname:
+    hostname: user-management.ems-customer.com
+  proxy:
+    headers: xforwarded

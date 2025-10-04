@@ -1,43 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: production-cluster-issuer
-spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: production-cluster-issuer
-    solvers:
-      - selector: {}
-        http01:
-          ingress:
-            class: istio
----
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: staging-cluster-issuer
-spec:
-  acme:
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: staging-cluster-issuer
-    solvers:
-      - selector: {}
-        http01:
-          ingress:
-            class: istio
----
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-stage
+  name: namecheap-letsencrypt-stage
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     email:  test@librelab.online
     privateKeySecretRef:
-      name: letsencrypt-stage
+      name: namecheap-letsencrypt-stage
     solvers:
       - dns01:
           webhook:
@@ -54,13 +24,13 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-route53
+  name: route53-letsencrypt-stage
 spec:
   acme:
     email: admin@ewebsystems.net
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-route53
+      name: route53-letsencrypt-stage
     solvers:
       - selector:
           dnsZones:
@@ -71,5 +41,5 @@ spec:
             hostedZoneID: Z02977163LNV8CWDC2T99
             accessKeyID: "AKIA4BIQSU3H5V2CGYXY"
             secretAccessKeySecretRef:
-              name: route53-credentials-secret
+              name: aws-credentials-secret
               key: secret-access-key
