@@ -3,6 +3,7 @@ kind: Job
 metadata:
   name: {{ include "mychart.fullname" . }}-print-tenants
   labels: {{- include "mychart.labels" . | nindent 4 }}
+  namespace: eweb
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-weight: "10"
