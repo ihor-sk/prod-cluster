@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: namecheap-webhook
+  name: database
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -9,14 +9,14 @@ spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: cert-manager
+    namespace: default
   source:
-    repoURL: https://github.com/kelvie/cert-manager-webhook-namecheap
-    targetRevision: master
-    path: deploy/cert-manager-webhook-namecheap
-    helm:
-      releaseName: namecheap-webhook
+    repoURL: git@github.com:ihor-sk/prod-cluster.git
+    targetRevision: main
+    path: setup/database
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
