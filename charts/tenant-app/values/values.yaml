@@ -7,7 +7,6 @@ global:
 tenants:
   - name: foo
   - name: bar
-  - name: test
 cluster:
   name: eweb
 
