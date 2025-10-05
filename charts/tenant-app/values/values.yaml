@@ -9,3 +9,11 @@ tenants:
   - name: bar
 cluster:
   name: eweb
+
+
+atlas:
+  image: arigaio/atlas:latest
+  sslmode: disable
+  job:
+    backoffLimit: 0
+    ttlSecondsAfterFinished: 86400   # keep logs 1 day (optional)

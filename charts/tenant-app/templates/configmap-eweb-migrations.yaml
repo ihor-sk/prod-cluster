@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atlas-files
+  namespace: {{ .Values.global.namespace | default "eweb" }}
+data:
+  run.sh: |
+    #!/usr/bin/env sh
+    set -eu
+
+    : "${TENANT:?TENANT env is required}"
+    : "${PG_URI:?PG_URI env is required}"
+
+    if ! command -v psql >/dev/null 2>&1; then
+      echo "psql not found; installing postgresql-client..."
+      apk add --no-cache postgresql16-client >/dev/null
+    fi
+
+    URL="$PG_URI"
+    case "$URL" in
+      *\?*) URL="${URL}&sslmode={{ .Values.atlas.sslmode | default "disable" }}" ;;
+      *)    URL="${URL}?sslmode={{ .Values.atlas.sslmode | default "disable" }}" ;;
+    esac
+
+    echo "Checking schema '$TENANT'..."
+    CNT="$(PGCONNECT_TIMEOUT=10 psql "$URL" -Atc \
+      "select count(*) from information_schema.tables where table_schema = '$TENANT';" 2>/dev/null || echo "ERR")"
+
+    if [ "$CNT" = "ERR" ]; then
+      echo "ERROR: cannot connect with provided URL for tenant '$TENANT'." >&2
+      exit 1
+    fi
+
+    if [ "$CNT" -gt 0 ]; then
+      echo "Tenant $TENANT was already initialized"
+      exit 0
+    fi
+
+    echo "Schema '$TENANT' is empty → applying Atlas migration..."
+    atlas schema apply \
+      --url "$URL" \
+      --file /migrations/tenants/tenant.hcl \
+      --auto-approve \
+      --schema="$TENANT" \
+      --var tenant="$TENANT"
+
+  # Pull your HCL from the chart's files/ dir
+  tenant.hcl: |-
+{{ (.Files.Get "files/tenant.hcl") | nindent 4 }}

@@ -1,0 +1,66 @@
+{{- $ns := .Values.global.namespace | default "eweb" -}}
+{{- $cluster := .Values.cluster.name | default "eweb" -}}
+{{- $image := .Values.atlas.image | default "arigaio/atlas:latest" -}}
+{{- $ttl := .Values.atlas.job.ttlSecondsAfterFinished | default 0 -}}
+{{- $backoff := .Values.atlas.job.backoffLimit | default 0 -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ printf "%s-atlas-init" $.Release.Name | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $ns }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "10"      # controls relative order if multiple hooks
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: {{ $backoff }}
+  {{- if $ttl }}
+  ttlSecondsAfterFinished: {{ $ttl }}
+  {{- end }}
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: atlas
+          image: {{ $image | quote }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              echo "=== Atlas multi-tenant initialization ==="
+{{- range $i, $t := .Values.tenants }}
+              echo "--- Processing tenant: {{ $t.name }} ---"
+              export TENANT="{{ $t.name }}"
+              export PG_URI="$(printenv PG_URI_{{ $t.name | upper | replace "-" "_" }})"
+              /scripts/run.sh
+{{- end }}
+              echo "=== All tenants processed ==="
+          env:
+{{- range $i, $t := .Values.tenants }}
+            - name: PG_URI_{{ $t.name | upper | replace "-" "_" }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ printf "%s-pguser-%s-user" $cluster $t.name | quote }}
+                  key: uri
+{{- end }}
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+              readOnly: true
+            - name: migrations
+              mountPath: /migrations/tenants
+              readOnly: true
+      volumes:
+        - name: scripts
+          configMap:
+            name: atlas-files
+            items:
+              - key: run.sh
+                path: run.sh
+            defaultMode: 0755
+        - name: migrations
+          configMap:
+            name: atlas-files
+            items:
+              - key: tenant.hcl
+                path: tenant.hcl
