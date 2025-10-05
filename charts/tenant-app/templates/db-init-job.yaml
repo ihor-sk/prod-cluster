@@ -22,11 +22,17 @@ spec:
       restartPolicy: Never
       containers:
         - name: atlas
-          image: {{ $image | quote }}
+          image: alpine:3.20
+          securityContext:
+            runAsUser: 0
           command:
             - /bin/sh
             - -ec
             - |
+              echo "=== Installing tools (psql + Atlas) ==="
+              apk add --no-cache ca-certificates curl postgresql16-client
+              curl -sSf https://atlasgo.sh | sh   # installs /usr/local/bin/atlas
+      
               echo "=== Atlas multi-tenant initialization ==="
 {{- range $i, $t := .Values.tenants }}
               echo "--- Processing tenant: {{ $t.name }} ---"
