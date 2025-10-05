@@ -16,6 +16,7 @@ spec:
     targetRevision: 0.20.2
     helm:
       valuesObject:
+        installCRDs: true
         serviceAccount:
           create: false
           name: external-secrets
@@ -25,4 +26,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true
       - ServerSideApply=true
