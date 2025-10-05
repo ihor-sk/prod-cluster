@@ -8,4 +8,4 @@ tenants:
   - name: foo
   - name: bar
 cluster:
-  name: ewebnew
+  name: eweb
