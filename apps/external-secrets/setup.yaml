@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: git@github.com:ihor-sk/prod-cluster.git
     targetRevision: main
-    path: setup/cert-manager
+    path: setup/secrets
   syncPolicy:
     automated:
       prune: true
