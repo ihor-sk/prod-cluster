@@ -6,6 +6,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
+  dependsOn:
+    - name: external-secrets-operator
   project: default
   destination:
     server: https://kubernetes.default.svc

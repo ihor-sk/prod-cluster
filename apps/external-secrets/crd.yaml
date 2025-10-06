@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-secrets-crds
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    # namespace is ignored for CRDs (cluster-scoped), but Argo requires one
+    namespace: external-secrets
+  source:
+    repoURL: https://github.com/external-secrets/external-secrets.git
+    targetRevision: 0.20.2                  # e.g., v0.16.1 or v0.20.2
+    path: deploy/crds                          # kustomize dir that produces the bundle
+    kustomize: {}                              # (optional) explicit kustomize source
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true                   # ← same effect as --server-side
+      - ApplyOutOfSyncOnly=true                # avoid no-op SSA churn
