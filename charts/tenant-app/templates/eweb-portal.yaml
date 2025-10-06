@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eweb-portal-index
+  namespace: {{ .Values.global.namespace | default "eweb" }}
+data:
+  index.html: |
+    <!doctype html>
+    <html>
+    <head><meta charset="utf-8"><title>eweb-portal</title></head>
+    <body style="font-family:sans-serif;text-align:center;margin-top:20vh">
+    <h1>eweb-portal</h1>
+    <p>Welcome 🎉</p>
+    </body>
+    </html>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eweb-portal
+  namespace: {{ .Values.global.namespace | default "eweb" }}
+  labels: { app: eweb-portal }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: eweb-portal }
+  template:
+    metadata:
+      labels: { app: eweb-portal }
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports: [{ containerPort: 80 }]
+          volumeMounts:
+            - name: web
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+      volumes:
+        - name: web
+          configMap:
+            name: eweb-portal-index
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eweb-portal
+  namespace: {{ .Values.global.namespace | default "eweb" }}
+  labels: { app: eweb-portal }
+spec:
+  selector: { app: eweb-portal }
+  ports:
+    - name: http
+      port: {{ .Values.istio.servicePort | default 80 }}
+      targetPort: 80
+      protocol: TCP
