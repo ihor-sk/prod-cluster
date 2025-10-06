@@ -6,6 +6,7 @@ global:
 tenants:
   - name: ewebtest
   - name: foo
+  - name: martin
 
 cluster:
   name: eweb
