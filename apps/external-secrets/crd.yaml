@@ -14,7 +14,8 @@ spec:
     repoURL: https://github.com/external-secrets/external-secrets.git
     targetRevision: v0.20.2
     path: deploy/crds
-    kustomize: {}
+    directory:
+      recurse: true
   syncPolicy:
     automated:
       prune: true
