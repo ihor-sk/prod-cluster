@@ -20,6 +20,7 @@ spec:
   instances:
     - replicas: 1
       dataVolumeClaimSpec:
+        storageClassName: gp3
         accessModes:
           - "ReadWriteOnce"
         resources:
@@ -31,6 +32,7 @@ spec:
         - name: repo1
           volume:
             volumeClaimSpec:
+              storageClassName: gp3
               accessModes:
                 - "ReadWriteOnce"
               resources:
