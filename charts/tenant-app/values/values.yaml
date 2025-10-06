@@ -1,6 +1,5 @@
 global:
-  domain: ""
-  oauth: user-management.ems-customer.com
+  domain: "ewebsystems.net"
   backend: api.emotions.com.se
   namespace: eweb
 
