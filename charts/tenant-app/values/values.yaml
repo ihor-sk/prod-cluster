@@ -5,10 +5,7 @@ global:
   namespace: eweb
 
 tenants:
-  - name: foo
-  - name: bar
   - name: ewebtest
-  - name: everlast
 
 cluster:
   name: eweb
