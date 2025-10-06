@@ -7,6 +7,8 @@ global:
 tenants:
   - name: foo
   - name: bar
+  - name: ewebtest
+
 cluster:
   name: eweb
 
@@ -16,4 +18,3 @@ atlas:
   sslmode: disable
   job:
     backoffLimit: 0
-    ttlSecondsAfterFinished: 86400   # keep logs 1 day (optional)
