@@ -13,7 +13,7 @@ spec:
     namespace: external-secrets
   source:
     repoURL: https://github.com/external-secrets/external-secrets.git
-    targetRevision: 0.20.2                  # e.g., v0.16.1 or v0.20.2
+    targetRevision: v0.20.2                  # e.g., v0.16.1 or v0.20.2
     path: deploy/crds                          # kustomize dir that produces the bundle
     kustomize: {}                              # (optional) explicit kustomize source
   syncPolicy:
