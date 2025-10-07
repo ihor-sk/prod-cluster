@@ -10,12 +10,22 @@ data:
 
     : "${TENANT:?TENANT is required}"
 
+    props="/tmp/${TENANT}.properties"
+    
     start_ts="$(date -Is)"
     echo "=== [${TENANT}] START at ${start_ts} ==="
 
-    # call the CLI for this tenant
-    ls /tenants/foo
-    cat /tenants/foo/uri
+    {
+      printf 'realm.name=%s\n'              "$(cat "/tenants/${TENANT}/dbname")"
+      printf 'eweb.init.admin-secret=%s\n'  "$(cat "/tenants/${TENANT}/jdbc-uri")"
+      printf 'eweb.client.secret=%s\n'      "$(cat "/tenants/${TENANT}/verifier")"
+      printf 'eweb.core.secret=%s\n'        "$(cat "/tenants/${TENANT}/user")"
+    } > "${props}"
+    
+    
+    
+    cat /tmp/${TENANT}.properties
+    
     java -jar /app/keycloak-config-cli.jar "${TENANT}"
 
     end_ts="$(date -Is)"
