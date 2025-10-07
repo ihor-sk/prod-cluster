@@ -1,0 +1,23 @@
+{{- $ns := .Values.global.namespace | default "eweb" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "migration-keycloak-script"
+  namespace: {{ $ns }}
+data:
+  run.sh: |-
+    #!/bin/sh
+    set -euo pipefail
+
+    : "${TENANT:?TENANT is required}"
+
+    start_ts="$(date -Is)"
+    echo "=== [${TENANT}] START at ${start_ts} ==="
+
+    # call the CLI for this tenant
+    java -jar /app/keycloak-config-cli.jar "${TENANT}"
+    rc=$?
+
+    end_ts="$(date -Is)"
+    echo "=== [${TENANT}] END rc=${rc} at ${end_ts} ==="
+    exit "${rc}"

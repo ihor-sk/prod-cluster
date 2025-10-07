@@ -1,0 +1,50 @@
+{{- $ns := .Values.global.namespace | default "eweb" -}}
+{{- $img := .Values.keycloakConfigCli.image | default "docker.io/adorsys/keycloak-config-cli:latest" -}}
+{{- $ttl := .Values.job.ttlSecondsAfterFinished | default 0 -}}
+{{- $backoff := .Values.job.backoffLimit | default 0 -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ printf "%s-keycloak-config" $.Release.Name | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $ns }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "10"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: {{ $backoff }}
+  {{- if $ttl }}
+  ttlSecondsAfterFinished: {{ $ttl }}
+  {{- end }}
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: keycloak-config-cli
+          image: "docker.io/adorsys/keycloak-config-cli:latest"
+          imagePullPolicy: {{ default "IfNotPresent" .Values.imagePullPolicy }}
+          securityContext:
+            runAsUser: 0
+          command: ["/bin/sh","-ec"]
+          args:
+            - |
+              echo "=== Keycloak config: multi-tenant run ==="
+              {{- range $i, $t := .Values.tenants }}
+              echo "--- Processing tenant: {{ $t.name }} ---"
+              TENANT="{{ $t.name }}" /scripts/run.sh || { echo "!!! Tenant {{ $t.name }} failed"; exit 1; }
+              echo "--- Done tenant: {{ $t.name }} ---"
+              {{- end }}
+              echo "=== All tenants processed ==="
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+              readOnly: true
+          
+      volumes:
+        - name: scripts
+          configMap:
+            name: "migration-keycloak-script"
+            items:
+              - key: run.sh
+                path: run.sh
+            defaultMode: 0755
