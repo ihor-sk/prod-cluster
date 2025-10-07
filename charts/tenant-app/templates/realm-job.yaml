@@ -46,6 +46,7 @@ spec:
             items:
               - key: run.sh
                 path: run.sh
+            defaultMode: 0755
         - name: tenant-foo
           secret:
             secretName: eweb-pguser-foo-user
