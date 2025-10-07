@@ -5,6 +5,7 @@ global:
 
 tenants:
   - name: foo
+  - name: bar
 
 cluster:
   name: eweb
