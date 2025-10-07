@@ -1,6 +1,4 @@
 {{- $ns := .Values.global.namespace | default "eweb" -}}
-{{- $img := .Values.keycloakConfigCli.image | default "docker.io/adorsys/keycloak-config-cli:latest" -}}
-{{- $ttl := .Values.job.ttlSecondsAfterFinished | default 0 -}}
 {{- $backoff := .Values.job.backoffLimit | default 0 -}}
 apiVersion: batch/v1
 kind: Job
@@ -13,9 +11,6 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   backoffLimit: {{ $backoff }}
-  {{- if $ttl }}
-  ttlSecondsAfterFinished: {{ $ttl }}
-  {{- end }}
   template:
     spec:
       restartPolicy: Never
