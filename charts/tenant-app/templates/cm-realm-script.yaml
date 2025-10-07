@@ -7,7 +7,6 @@ metadata:
 data:
   run.sh: |-
     #!/bin/sh
-    set -euo pipefail
 
     : "${TENANT:?TENANT is required}"
 
@@ -16,8 +15,6 @@ data:
 
     # call the CLI for this tenant
     java -jar /app/keycloak-config-cli.jar "${TENANT}"
-    rc=$?
 
     end_ts="$(date -Is)"
     echo "=== [${TENANT}] END rc=${rc} at ${end_ts} ==="
-    exit "${rc}"
