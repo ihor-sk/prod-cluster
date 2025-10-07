@@ -25,7 +25,7 @@ spec:
               echo "=== Keycloak config: multi-tenant run ==="
               {{- range $i, $t := .Values.tenants }}
               echo "--- Processing tenant: {{ $t.name }} ---"
-              TENANT="{{ $t.name }}" /scripts/run.sh || { echo "!!! Tenant {{ $t.name }} failed"; exit 1; }
+              TENANT="{{ $t.name }}" /scripts/run.sh 
               echo "--- Done tenant: {{ $t.name }} ---"
               {{- end }}
               echo "=== All tenants processed ==="
@@ -33,7 +33,12 @@ spec:
             - name: scripts
               mountPath: /scripts
               readOnly: true
-          
+            - name: tenant-foo
+              mountPath: /tenants/foo
+              readOnly: true
+            - name: tenant-bar
+              mountPath: /tenants/bar
+              readOnly: true
       volumes:
         - name: scripts
           configMap:
@@ -41,4 +46,9 @@ spec:
             items:
               - key: run.sh
                 path: run.sh
-            defaultMode: 0755
+        - name: tenant-foo
+          secret:
+            secretName: eweb-pguser-foo-user
+        - name: tenant-bar
+          secret:
+            secretName: eweb-pguser-bar-user

@@ -14,6 +14,8 @@ data:
     echo "=== [${TENANT}] START at ${start_ts} ==="
 
     # call the CLI for this tenant
+    ls /tenants/foo
+    cat /tenants/foo/uri
     java -jar /app/keycloak-config-cli.jar "${TENANT}"
 
     end_ts="$(date -Is)"
