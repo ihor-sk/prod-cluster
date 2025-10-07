@@ -1,5 +1,4 @@
 {{- $ns := .Values.global.namespace | default "eweb" -}}
-{{- $backoff := .Values.job.backoffLimit | default 0 -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -10,7 +9,7 @@ metadata:
     "helm.sh/hook-weight": "10"
     "helm.sh/hook-delete-policy": before-hook-creation
 spec:
-  backoffLimit: {{ $backoff }}
+  backoffLimit: 0
   template:
     spec:
       restartPolicy: Never
