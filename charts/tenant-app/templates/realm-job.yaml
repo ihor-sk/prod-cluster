@@ -50,6 +50,8 @@ spec:
         - name: tenant-foo
           secret:
             secretName: eweb-pguser-foo-user
+            defaultMode: 0444
         - name: tenant-bar
           secret:
             secretName: eweb-pguser-bar-user
+            defaultMode: 0444
