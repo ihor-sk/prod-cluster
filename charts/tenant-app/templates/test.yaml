@@ -14,7 +14,7 @@ spec:
     template:
       type: Opaque
       data:
-        init-password:  "{{ .initAdmin }}"
+        init-password:  {{ printf "{{ .initAdmin }}" | quote }}
   data:
     - secretKey: initAdmin
       remoteRef:
