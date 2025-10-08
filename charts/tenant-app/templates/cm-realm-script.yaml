@@ -11,7 +11,7 @@ data:
 
     : "${TENANT:?TENANT is required}"
 
-    props="/tmp/secret.properties"
+    props="/tmp/secrets.properties"
     
     start_ts="$(date -Is)"
     echo "=== [${TENANT}] START at ${start_ts} ==="
