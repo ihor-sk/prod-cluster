@@ -39,9 +39,6 @@ spec:
             - name: tenant-{{ $t.name }}
               mountPath: /tenants/{{ $t.name }}
               readOnly: true
-            - name: tenant-{{ $t.name }}
-              mountPath: /tenants/{{ $t.name }}
-              readOnly: true
               {{- end }}
           env:
             - name: KEYCLOAK_URL

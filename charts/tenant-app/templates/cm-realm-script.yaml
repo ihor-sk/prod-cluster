@@ -17,7 +17,7 @@ data:
     echo "=== [${TENANT}] START at ${start_ts} ==="
 
     {
-      printf 'realm.name=%s\n'  "$(cat "/tenants/${TENANT}/${TENANT}")"
+      printf 'realm.name=%s\n'  "$(echo "${TENANT}")"
       {{- range $k := $keys }}
       printf '{{ $k }}=%s\n' "$(cat "/tenants/${TENANT}/{{ $k }}")"
       {{- end }}
