@@ -23,7 +23,7 @@ data:
       {{- end }}
     } > "${props}"
     
-    cat /tmp/${TENANT}.properties
+    cat /tmp/secrets.properties
     
     java -jar /app/keycloak-config-cli.jar
 
