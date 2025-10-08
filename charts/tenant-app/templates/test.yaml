@@ -1,0 +1,22 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: test-user-secret
+  namespace: eweb
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: secret-store
+    kind: ClusterSecretStore
+  target:
+    name: test-user-secret
+    creationPolicy: Owner
+    template:
+      type: Opaque
+      data:
+        init-password:  "{{ .initAdmin }}"
+  data:
+    - secretKey: initAdmin
+      remoteRef:
+        key: prod/tenants/test/user
+        property: realm.name
