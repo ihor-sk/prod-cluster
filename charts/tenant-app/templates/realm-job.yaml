@@ -50,7 +50,7 @@ spec:
             - name: IMPORT_VARSUBSTITUTION_ENABLED
               value: "true"
             - name: SPRING_CONFIG_IMPORT
-              value: "optional:file:/tmp/secret.properties"
+              value: "optional:file:/tmp/secrets.properties"
             - name: KEYCLOAK_USER
               value: "temp-admin"
             - name: IMPORT_FILES_LOCATIONS
