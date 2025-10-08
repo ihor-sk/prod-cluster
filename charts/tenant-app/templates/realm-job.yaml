@@ -32,14 +32,42 @@ spec:
           volumeMounts:
             - name: scripts
               mountPath: /scripts
+              readOnly: true            
+            - name: template
+              mountPath: /config
               readOnly: true
-            - name: tenant-foo
-              mountPath: /tenants/foo
+              {{- range $i, $t := .Values.tenants }}
+            - name: tenant-{{ $t.name }}
+              mountPath: /tenants/{{ $t.name }}
               readOnly: true
-            - name: tenant-bar
-              mountPath: /tenants/bar
+            - name: tenant-{{ $t.name }}
+              mountPath: /tenants/{{ $t.name }}
               readOnly: true
+              {{- end }}
+          env:
+            - name: KEYCLOAK_URL
+              value: "https://user-management.ewebsystems.net"
+            - name: KEYCLOAK_SSLVERIFY
+              value: "false"
+            - name: KEYCLOAK_AVAILABILITYCHECK_ENABLED
+              value: "true"
+            - name: IMPORT_VARSUBSTITUTION_ENABLED
+              value: "true"
+            - name: SPRING_CONFIG_IMPORT
+              value: "optional:file:/tmp/secret.properties"
+            - name: KEYCLOAK_USER
+              value: "temp-admin"
+            - name: IMPORT_FILES_LOCATIONS
+              value: "/config/template.json"
+            - name: KEYCLOAK_PASSWORD
+              value: "b74219185cbb4c33bac33d9f27eff022"
       volumes:
+        - name: template
+          configMap:
+            name: "realm-template"
+            items:
+              - key: template.json
+                path: template.json
         - name: scripts
           configMap:
             name: "migration-keycloak-script"
@@ -47,11 +75,9 @@ spec:
               - key: run.sh
                 path: run.sh
             defaultMode: 0755
-        - name: tenant-foo
+       {{- range $i, $t := .Values.tenants }}
+        - name: tenant-{{ $t.name }}
           secret:
-            secretName: eweb-pguser-foo-user
+            secretName: {{ $t.name }}-tenant-secret
             defaultMode: 0444
-        - name: tenant-bar
-          secret:
-            secretName: eweb-pguser-bar-user
-            defaultMode: 0444
+        {{- end }}

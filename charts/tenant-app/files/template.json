@@ -1,0 +1,107 @@
+{
+  "enabled": true,
+  "realm": "$(properties:/config/secrets.properties::realm.name)",
+  "clientScopes": [
+    {
+      "name": "profile",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "Last name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "lastName",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "lastName",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "First name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "firstName",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "firstName",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "Tenant site",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "siteId",
+            "claim.name": "site",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "username",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "preferred_username",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "email": "admin@admin.com",
+      "enabled": true,
+      "firstName": "Admin",
+      "lastName": "Admin",
+      "attributes": { "siteId": ["1"] },
+      "credentials": [
+        {
+          "type": "password",
+          "value": "$(properties:/config/secrets.properties::eweb.admin.initSecret)"
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "eweb-client-portal",
+      "name": "Eweb Client Portal",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "$(properties:/config/secrets.properties::eweb.portal.secret)",
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["*"]
+    },
+    {
+      "clientId": "eweb-core",
+      "name": "Eweb core",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "$(properties:/config/secrets.properties::eweb.core.secret)",
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "redirectUris": ["*"],
+      "webOrigins": ["*"]
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 {{- $ns := .Values.global.namespace | default "eweb" -}}
+{{- $keys := .Values.global.tenantKeys | default (list) -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -10,23 +11,21 @@ data:
 
     : "${TENANT:?TENANT is required}"
 
-    props="/tmp/${TENANT}.properties"
+    props="/tmp/secret.properties"
     
     start_ts="$(date -Is)"
     echo "=== [${TENANT}] START at ${start_ts} ==="
 
     {
-      printf 'realm.name=%s\n'              "$(cat "/tenants/${TENANT}/dbname")"
-      printf 'eweb.init.admin-secret=%s\n'  "$(cat "/tenants/${TENANT}/jdbc-uri")"
-      printf 'eweb.client.secret=%s\n'      "$(cat "/tenants/${TENANT}/verifier")"
-      printf 'eweb.core.secret=%s\n'        "$(cat "/tenants/${TENANT}/user")"
+      printf 'realm.name=%s\n'  "$(cat "/tenants/${TENANT}/${TENANT}")"
+      {{- range $k := $keys }}
+      printf '{{ $k }}=%s\n' "$(cat "/tenants/${TENANT}/{{ $k }}")"
+      {{- end }}
     } > "${props}"
-    
-    
     
     cat /tmp/${TENANT}.properties
     
-    java -jar /app/keycloak-config-cli.jar "${TENANT}"
+    java -jar /app/keycloak-config-cli.jar
 
     end_ts="$(date -Is)"
     echo "=== [${TENANT}] END rc=${rc} at ${end_ts} ==="
