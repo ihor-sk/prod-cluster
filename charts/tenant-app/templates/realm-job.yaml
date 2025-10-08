@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ printf "%s-keycloak-config" $.Release.Name | trunc 63 | trimSuffix "-" }}
+  name: realm-job
   namespace: {{ $ns }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
