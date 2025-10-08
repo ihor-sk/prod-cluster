@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "realm": "$(properties:/config/secrets.properties::realm.name)",
+  "realm": "$(properties:/config/secrets.properties::realmName)",
   "clientScopes": [
     {
       "name": "profile",
@@ -75,7 +75,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "$(properties:/config/secrets.properties::eweb.admin.initSecret)"
+          "value": "$(properties:/config/secrets.properties::ewebAdminInitSecret)"
         }
       ]
     }
@@ -86,7 +86,7 @@
       "name": "Eweb Client Portal",
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "$(properties:/config/secrets.properties::eweb.portal.secret)",
+      "secret": "$(properties:/config/secrets.properties::ewebPortalSecret)",
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": true,
       "redirectUris": ["*"],
@@ -97,7 +97,7 @@
       "name": "Eweb core",
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "$(properties:/config/secrets.properties::eweb.core.secret)",
+      "secret": "$(properties:/config/secrets.properties::ewebCoreSecret)",
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": true,
       "redirectUris": ["*"],

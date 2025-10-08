@@ -4,9 +4,9 @@ global:
   backend: api.emotions.com.se
   namespace: eweb
   tenantKeys:
-    - eweb.core.secret
-    - eweb.portal.secret
-    - eweb.admin.initSecret
+    - ewebCoreSecret
+    - ewebPortalSecret
+    - ewebAdminInitSecret
 
 tenants:
   - name: foo
