@@ -11,7 +11,7 @@ data:
 
     : "${TENANT:?TENANT is required}"
 
-    props="/config/secret.properties"
+    props="/tmp/secret.properties"
     
     start_ts="$(date -Is)"
     echo "=== [${TENANT}] START at ${start_ts} ==="
@@ -23,7 +23,7 @@ data:
       {{- end }}
     } > "${props}"
     
-    cat /config/${TENANT}.properties
+    cat /tmp/${TENANT}.properties
     
     java -jar /app/keycloak-config-cli.jar
 
