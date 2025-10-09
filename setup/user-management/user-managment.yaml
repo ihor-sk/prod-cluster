@@ -16,7 +16,7 @@ spec:
       engineVersion: v2
       data:
         username: "{{ .userManagementPassword }}"
-        server.password: "{{ .userManagementUser }}"
+        password: "{{ .userManagementUser }}"
   data:
     - secretKey: userManagementPassword
       remoteRef:
