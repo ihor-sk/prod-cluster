@@ -17,11 +17,11 @@ spec:
         username: { .userManagementUser }
         password: { .userManagementPassword }        
 data:
-- secretKey: userManagementUser
-  remoteRef:
-    key: prod/eweb/admin
-    property: {{ .userManagementUser }}
-- secretKey: userManagementUser
-  remoteRef:
-    key: prod/eweb/admin
-    property: {{ .userManagementUser }}
+  - secretKey: userManagementUser
+    remoteRef:
+      key: prod/eweb/admin
+      property: userManagementUser
+  - secretKey: userManagementPassword
+    remoteRef:
+      key: prod/eweb/admin
+      property: userManagementPassword
