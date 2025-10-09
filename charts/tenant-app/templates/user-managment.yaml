@@ -14,8 +14,8 @@ spec:
     template:
       type: Opaque
       data:
-        username: "{{ .username }}"
-        password: "{{ .password }}"   
+        username: "{{ .userManagementUser }}"
+        password: "{{ .userManagementPassword }}"   
 data:
   - secretKey: userManagementUser
     remoteRef:
