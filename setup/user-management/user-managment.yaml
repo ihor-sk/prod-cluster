@@ -19,9 +19,9 @@ spec:
 data:
 - secretKey: userManagementUser
   remoteRef:
-    key: prod/eweb
+    key: prod/eweb/admin
     property: {{ .userManagementUser }}
 - secretKey: userManagementUser
   remoteRef:
-    key: prod/eweb
+    key: prod/eweb/admin
     property: {{ .userManagementUser }}
