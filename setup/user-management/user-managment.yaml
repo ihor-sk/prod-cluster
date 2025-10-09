@@ -14,14 +14,14 @@ spec:
     template:
       type: Opaque
       data:
-        username: { .userManagementUser }
-        password: { .userManagementPassword }        
+        username: "{{ .username }}"
+        password: "{{ .password }}"
 data:
-  - secretKey: userManagementUser
+  - secretKey: username
     remoteRef:
       key: prod/eweb/admin
       property: userManagementUser
-  - secretKey: userManagementPassword
+  - secretKey: password
     remoteRef:
       key: prod/eweb/admin
       property: userManagementPassword
