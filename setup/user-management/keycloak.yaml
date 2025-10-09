@@ -5,6 +5,9 @@ metadata:
   namespace: user-management
 spec:
   instances: 1
+  bootstrapAdmin:
+    user:
+      secret: admin-secret
   http:
     httpEnabled: true
   db:

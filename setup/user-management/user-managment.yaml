@@ -1,0 +1,27 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: admin-secret
+  namespace: user-management
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: secret-store
+    kind: ClusterSecretStore
+  target:
+    name: admin-secret
+    creationPolicy: Owner
+    template:
+      type: Opaque
+      data:
+        username: { .userManagementUser }
+        password: { .userManagementPassword }        
+data:
+- secretKey: userManagementUser
+  remoteRef:
+    key: prod/eweb
+    property: {{ .userManagementUser }}
+- secretKey: userManagementUser
+  remoteRef:
+    key: prod/eweb
+    property: {{ .userManagementUser }}

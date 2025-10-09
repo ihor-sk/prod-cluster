@@ -52,11 +52,17 @@ spec:
             - name: SPRING_CONFIG_IMPORT
               value: "optional:file:/tmp/secrets.properties"
             - name: KEYCLOAK_USER
-              value: "temp-admin"
+              valueFrom:
+                secretKeyRef:
+                  name: user-management-secret
+                  key: username
+            - name: KEYCLOAK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: user-management-secret
+                  key: password
             - name: IMPORT_FILES_LOCATIONS
               value: "/config/template.json"
-            - name: KEYCLOAK_PASSWORD
-              value: "b74219185cbb4c33bac33d9f27eff022"
       volumes:
         - name: template
           configMap:

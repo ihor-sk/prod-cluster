@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: argocd
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - admin-secret.yaml
 patches:
   - path: config-map.yaml
