@@ -12,17 +12,17 @@ spec:
     name: user-management-secret
     creationPolicy: Owner
     template:
-      engineVersion: v2
       type: Opaque
+      engineVersion: v2
       data:
-        username:  {{ printf "{{ .username }}" | quote }}
-        password:  {{ printf "{{ .password }}" | quote }}
+        username:  {{ printf "{{ .userManagementUser }}" | quote }}
+        password:  {{ printf "{{ .userManagementPassword }}" | quote }}
   data:
-    - secretKey: username
-      remoteRef:
-        key: prod/eweb/admin
-        property: userManagementUser
-    - secretKey: password
+    - secretKey: userManagementPassword
       remoteRef:
         key: prod/eweb/admin
         property: userManagementPassword
+    - secretKey: userManagementUser
+      remoteRef:
+        key: prod/eweb/admin
+        property: userManagementUser
