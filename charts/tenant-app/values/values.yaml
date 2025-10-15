@@ -11,11 +11,8 @@ global:
 tenants:
   - name: foo
   - name: bar
-
 cluster:
   name: eweb
-
-
 atlas:
   image: arigaio/atlas:latest
   sslmode: disable
