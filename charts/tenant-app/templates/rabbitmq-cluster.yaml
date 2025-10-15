@@ -13,12 +13,6 @@ metadata:
   namespace: eweb
 spec:
   replicas: 3
-  rabbitmq:
-    additionalConfig: |
-      # This configures the default user, which is 'user' by default.
-      # The password for this user will be taken from the secret.
-      default_user = user
-      default_pass = {{ .default_user.password }}
   service:
     spec:
       type: ClusterIP
