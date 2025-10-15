@@ -41,7 +41,7 @@ spec:
             name: eweb-core
         - name: rabbit-secret
           secret:
-            secretName: cluster-default-user
+            secretName: rabbitmq-default-user-creds
             items:
               - key: username
                 path: spring.rabbitmq.username
