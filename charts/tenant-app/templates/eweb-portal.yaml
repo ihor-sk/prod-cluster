@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginx:1.27-alpine
+          image: 766198264464.dkr.ecr.us-east-1.amazonaws.com/test-portal
           ports: [{ containerPort: 80 }]
           volumeMounts:
             - name: web
