@@ -4,7 +4,7 @@ metadata:
   name: rabbitmq-default-user-creds
   namespace: eweb
 stringData:
-  password: "test"
+  password: "qwerty"
   username: "eweb"
 ---
 apiVersion: rabbitmq.com/v1beta1
