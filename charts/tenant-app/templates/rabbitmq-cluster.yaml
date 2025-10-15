@@ -24,6 +24,17 @@ spec:
           spec:
             containers:
               - name: rabbitmq
+                env:
+                  - name: RABBITMQ_DEFAULT_USER
+                    valueFrom:
+                      secretKeyRef:
+                        name: rabbitmq-default-user-creds
+                        key: username
+                  - name: RABBITMQ_DEFAULT_PASS
+                    valueFrom:
+                      secretKeyRef:
+                        name: rabbitmq-default-user-creds
+                        key: password
                 resources:
                   requests:
                     cpu: "250m"
@@ -31,10 +42,3 @@ spec:
                   limits:
                     cpu: "1"
                     memory: "1Gi"
-                env:
-                  - name: RABBITMQ_DEFAULT_USER
-                    value: eweb
-                  - name: RABBITMQ_DEFAULT_PASS_SECRET_NAME
-                    value: rabbitmq-default-user-creds
-                  - name: RABBITMQ_DEFAULT_PASS_SECRET_KEY
-                    value: password
