@@ -69,8 +69,8 @@ spec:
           configMap:
             name: "tenant-realm-script"
             items:
-              - key: template.json
-                path: template.json
+              - key: tenant.json
+                path: tenant.json
         - name: scripts
           configMap:
             name: "tenant-realm-script"
