@@ -10,7 +10,7 @@ metadata:
   namespace: {{ $ns }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "10"      # controls relative order if multiple hooks
+    "helm.sh/hook-weight": "10"
     "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   backoffLimit: {{ $backoff }}

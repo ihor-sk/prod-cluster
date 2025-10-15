@@ -44,6 +44,5 @@ data:
       --schema="$TENANT" \
       --var tenant="$TENANT"
 
-  # Pull your HCL from the chart's files/ dir
   tenant.hcl: |-
 {{ (.Files.Get "files/tenant.hcl") | nindent 4 }}

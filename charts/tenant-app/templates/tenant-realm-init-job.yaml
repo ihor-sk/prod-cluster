@@ -63,17 +63,17 @@ spec:
                   name: user-management-secret
                   key: password
             - name: IMPORT_FILES_LOCATIONS
-              value: "/config/template.json"
+              value: "/config/tenant.json"
       volumes:
         - name: template
           configMap:
-            name: "realm-template"
+            name: "tenant-realm-script"
             items:
               - key: template.json
                 path: template.json
         - name: scripts
           configMap:
-            name: "migration-keycloak-script"
+            name: "tenant-realm-script"
             items:
               - key: run.sh
                 path: run.sh
