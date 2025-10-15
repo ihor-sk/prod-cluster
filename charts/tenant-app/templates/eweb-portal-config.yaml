@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-portal-config
+  namespace: eweb
+data:
+  AUTH_CONFIG: |-
+    [
+    {{- range $secret := (lookup "v1" "Secret" .Release.Namespace "acme.com/tenant-secret=true").items }}
+      {
+        "name": "{{ $secret.metadata.name | replace "-tenant-secret" "" }}",
+        "secret": "{{ index $secret.data "ewebPortalSecret" | b64dec }}"
+      },
+    {{- end }}
+    ]
