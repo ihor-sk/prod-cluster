@@ -18,7 +18,7 @@ spec:
       containers:
         - name: eweb-core
           imagePullPolicy: Always
-          image: "766198264464.dkr.ecr.us-east-1.amazonaws.com/eweb-core"
+          image: "766198264464.dkr.ecr.us-east-1.amazonaws.com/eweb-core:v2"
           ports:
             - name: http
               containerPort: 8080
