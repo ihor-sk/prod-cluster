@@ -22,6 +22,7 @@ spec:
           args:
             - |
               echo "=== Keycloak config: multi-tenant run ==="
+              echo "=== Chek existing tenants ==="
               {{- range $i, $t := .Values.tenants }}
               echo "--- Processing tenant: {{ $t.name }} ---"
               TENANT="{{ $t.name }}" /scripts/run.sh 

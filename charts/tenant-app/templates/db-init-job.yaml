@@ -38,6 +38,7 @@ spec:
               echo "--- Processing tenant: {{ $t.name }} ---"
               export TENANT="{{ $t.name }}"
               export PG_URI="$(printenv PG_URI_{{ $t.name | upper | replace "-" "_" }})"
+              
               /scripts/run.sh
 {{- end }}
               echo "=== All tenants processed ==="
