@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eweb-core
+  namespace: eweb
+  labels:
+    app: eweb-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eweb-core
+  template:
+    metadata:
+      labels:
+        app: eweb-core
+    spec:
+      containers:
+        - name: eweb-core
+          imagePullPolicy: Always
+          image: "766198264464.dkr.ecr.us-east-1.amazonaws.com/eweb-core"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: "TCP"
+          volumeMounts:
+            - mountPath: /app/config
+              name: spring-config
+            - mountPath: /app/secrets/rabbit
+              name: rabbit-secret
+{{- range $i, $t := .Values.tenants }}
+            - mountPath: /app/secrets/tenants/{{ $t.name }}
+              name: {{ $t.name }}-db
+{{- end }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
+      volumes:
+        - name: spring-config
+          configMap:
+            name: eweb-core
+        - name: rabbit-secret
+          secret:
+            secretName: cluster-default-user
+            items:
+              - key: username
+                path: spring.rabbitmq.username
+              - key: password
+                path: spring.rabbitmq.password
+{{- range $i, $t := .Values.tenants }}
+        - name: {{ $t.name }}-db
+          secret:
+            secretName: eweb-pguser-{{ $t.name }}-user
+            items:
+              - key: user
+                path: eweb.tenants.{{ $t.name }}.db.username
+              - key: password
+                path: eweb.tenants.{{ $t.name }}.db.password
+{{- end }}

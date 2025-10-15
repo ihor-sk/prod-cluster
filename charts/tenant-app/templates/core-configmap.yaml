@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eweb-core
+data:
+  application-dev.yml: |-
+    spring:
+      rabbitmq:
+        host: cluster.eweb.svc
+      datasource:
+        hikari:
+          jdbc-url: jdbc:postgresql://eweb-primary:5432/eweb
+        url: jdbc:postgresql://eweb-primary:5432/eweb
+      data:
+        jdbc:
+          dialect: postgresql
+          repositories:
+            enabled: true
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              issuer-uri: https://user-management.ems-customer.com/realms/
+    eweb:
+      tenants:
+{{- range $i, $t := .Values.tenants }}
+        {{ $t.name }}:
+          db:
+            schema: {{ $t.name }}
+          keycloak:
+            eweb-user-admin-secret: GUycXD0cCGx7WM5e3Q7UCPTDlI5wc7Iw
+{{ end }}
+      stream-events:
+        sorting:
+          queue: sorting.persisted.events
+    logging:
+      level:
+        org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter: trace
