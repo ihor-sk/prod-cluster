@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rabbitmq-default-user-creds
+  namespace: eweb
+stringData:
+  password: "qwerty"
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: cluster
+  namespace: eweb
+spec:
+  replicas: 3
+  rabbitmq:
+    additionalConfig: |
+      # This configures the default user, which is 'user' by default.
+      # The password for this user will be taken from the secret.
+      default_user = user
+      default_pass = {{ .default_user.password }}
+  service:
+    spec:
+      type: ClusterIP
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers:
+              - name: rabbitmq
+                env:
+                  - name: RABBITMQ_DEFAULT_USER
+                    value: eweb
+                  - name: RABBITMQ_DEFAULT_PASS_SECRET_NAME
+                    value: rabbitmq-default-user-creds
+                  - name: RABBITMQ_DEFAULT_PASS_SECRET_KEY
+                    value: password
