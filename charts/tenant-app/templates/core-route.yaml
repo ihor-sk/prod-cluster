@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: eweb-core-service
+  namespace: eweb
+  labels:
+    app: eweb-core
+spec:
+  selector:
+    app: eweb-core
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: eweb-core-virtual-service
+  namespace: eweb
+spec:
+  hosts:
+    - {{ .Values.global.backend }}
+  gateways:
+    - istio-ingress/main-gateway
+  http:
+    - route:
+        - destination:
+            host: eweb-core.eweb.svc.cluster.local
+            port:
+              number: 8080
