@@ -6,7 +6,7 @@ data:
   application-dev.yml: |-
     spring:
       rabbitmq:
-        host: cluster.eweb.svc
+        host: eweb-broker.eweb.svc
       datasource:
         hikari:
           jdbc-url: jdbc:postgresql://eweb-primary:5432/eweb
