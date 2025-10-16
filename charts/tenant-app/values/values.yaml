@@ -1,7 +1,7 @@
 global:
   
   domain: "ewebsystems.net"
-  backend: api.emotions.com.se
+  backend: api.ewebsystems.net
   namespace: eweb
   tenantKeys:
     - ewebCoreSecret

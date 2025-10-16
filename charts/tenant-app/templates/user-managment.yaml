@@ -20,9 +20,9 @@ spec:
   data:
     - secretKey: userManagementPassword
       remoteRef:
-        key: prod/eweb/admin
+        key: stage/eweb/admin
         property: userManagementPassword
     - secretKey: userManagementUser
       remoteRef:
-        key: prod/eweb/admin
+        key: stage/eweb/admin
         property: userManagementUser

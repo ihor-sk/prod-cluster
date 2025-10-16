@@ -18,7 +18,7 @@ spec:
       containers:
         - name: eweb-core
           imagePullPolicy: Always
-          image: "766198264464.dkr.ecr.us-east-1.amazonaws.com/eweb-core:v2"
+          image: "827352852175.dkr.ecr.eu-north-1.amazonaws.com/eweb-core"
           ports:
             - name: http
               containerPort: 8080
@@ -41,7 +41,7 @@ spec:
             name: eweb-core
         - name: rabbit-secret
           secret:
-            secretName: rabbitmq-default-user-creds
+            secretName: broker-eweb-user
             items:
               - key: username
                 path: spring.rabbitmq.username

@@ -16,4 +16,4 @@ spec:
         protocol: HTTPS
       tls:
         mode: SIMPLE
-        credentialName: stage-ewebsystems
+        credentialName: prod-ewebsystems

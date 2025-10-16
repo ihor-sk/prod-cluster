@@ -10,3 +10,17 @@ spec:
   issuerRef:
     kind: ClusterIssuer
     name: route53-letsencrypt-stage
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-prod
+  namespace: istio-ingress
+spec:
+  secretName: prod-ewebsystems
+  dnsNames:
+    - "*.ewebsystems.net"
+  issuerRef:
+    kind: ClusterIssuer
+    name: route53-letsencrypt-prod
+    

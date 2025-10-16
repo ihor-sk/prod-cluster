@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: realm-template
-  namespace: {{ .Values.global.namespace | default "eweb" }}
-data:
-  template.json: |-
-{{ (.Files.Get "files/template.json") | nindent 4 }}

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rabbitmq-default-user-creds
+  name: broker-eweb-user
   namespace: eweb
 stringData:
   password: "qwerty"
@@ -10,7 +10,7 @@ stringData:
 apiVersion: rabbitmq.com/v1beta1
 kind: RabbitmqCluster
 metadata:
-  name: cluster
+  name: eweb-broker
   namespace: eweb
 spec:
   replicas: 1
@@ -28,12 +28,12 @@ spec:
                   - name: RABBITMQ_DEFAULT_USER
                     valueFrom:
                       secretKeyRef:
-                        name: rabbitmq-default-user-creds
+                        name: broker-eweb-user
                         key: username
                   - name: RABBITMQ_DEFAULT_PASS
                     valueFrom:
                       secretKeyRef:
-                        name: rabbitmq-default-user-creds
+                        name: broker-eweb-user
                         key: password
                 resources:
                   requests:

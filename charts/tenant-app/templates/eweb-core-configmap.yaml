@@ -20,7 +20,7 @@ data:
         oauth2:
           resourceserver:
             jwt:
-              issuer-uri: https://user-management.ems-customer.com/realms/
+              issuer-uri: https://user-management.{{ .Values.global.domain }}/realms/
     eweb:
       tenants:
 {{- range $i, $t := .Values.tenants }}
