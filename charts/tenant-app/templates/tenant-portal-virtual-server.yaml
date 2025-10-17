@@ -1,6 +1,6 @@
 {{- $ns := .Values.global.namespace | default "eweb" -}}
 {{- $domain := required "Set .Values.global.domain" .Values.global.domain -}}
-{{- $svcPort := default 80 -}}
+{{- $svcPort := default 3000 -}}
 {{- range $t := .Values.tenants }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -20,7 +20,7 @@ spec:
         - uri: { prefix: "/" }
       route:
         - destination:
-            host: eweb-portal.{{ $ns }}.svc.cluster.local
+            host: eweb-client-portal.{{ $ns }}.svc.cluster.local
             port: { number: {{ $svcPort }} }
       timeout: 30s
 ---
