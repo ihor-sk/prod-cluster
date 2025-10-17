@@ -11,6 +11,7 @@ global:
 tenants:
   - name: foo
   - name: bar
+  - name: ewebtest
     
 cluster:
   name: eweb
