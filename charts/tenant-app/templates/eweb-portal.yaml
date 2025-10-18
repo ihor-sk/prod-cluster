@@ -8,7 +8,7 @@ data:
   KEYCLOAK_CLIENT_ID: "eweb-client-portal"
   KEYCLOAK_ISSUER: "https://user-management.ewebsystems.net/realms/"
   EWEB_DOMAIN: "ewebsystems.net"
-  AUTH_CONFIG: '[{ "name": "foo", "secret": "NjhPDdX2rAaVVFj2HOIhZEMwDlrIoVpl" }, { "name": "bar", "secret": "NjhPDdX2rAaVVFj2HOIhZEMwDlrIoVpl" }]'
+  AUTH_CONFIG: '[{ "name": "foo", "secret": "LB64PXh9B0Y2nOaDqg7QPPGud8rp3It1" }, { "name": "bar", "secret": "rQb9JMtDg8EnrDjHFob5nLqZS5kbLeej" }]'
 ---
 apiVersion: apps/v1
 kind: Deployment
