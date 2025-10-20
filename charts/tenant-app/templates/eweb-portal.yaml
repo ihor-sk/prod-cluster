@@ -22,18 +22,19 @@ spec:
             - /bin/sh
             - -c
             - |
-              mkdir -p /app/config
-              echo "[" > /app/config/auth_config.json
+              mkdir -p /app/env
+              echo -n "AUTH_CONFIG='" > /app/env/.env.local
+              echo -n "[" >> /app/env/.env.local
               {{- $lastIndex := sub (len .Values.tenants) 1 }}
               {{- range $i, $t := .Values.tenants }}
               VALUE=$(cat /secrets/{{ $t.name }}/ewebPortalSecret)
-              echo "{\"name\": \"{{ $t.name }}\", \"secret\": \"${VALUE}\"}" >> /app/config/auth_config.json
+              echo -n "{\"name\": \"{{ $t.name }}\", \"secret\": \"${VALUE}\"}" >> /app/env/.env.local
               {{- if ne $i $lastIndex }},{{ end }}
               {{- end }}
-              echo "]" >> /app/config/auth_config.json
+              echo "]'" >> /app/env/.env.local
           volumeMounts:
             - name: auth-config
-              mountPath: /app/config
+              mountPath: /app/env
             {{- range .Values.tenants }}
             - name: {{ .name }}-tenant-secret
               mountPath: /secrets/{{ .name }}
@@ -44,6 +45,12 @@ spec:
         - name: eweb-client-portal
           imagePullPolicy: Always
           image: "827352852175.dkr.ecr.eu-north-1.amazonaws.com/eweb-client-portal:latest"
+          command: [ "/bin/sh" ]
+          args:
+            - -c
+            - |
+              cp /app/env/.env.local /app/.env.local
+              exec npm start
           ports:
             - name: http
               containerPort: 3000
@@ -61,16 +68,16 @@ spec:
               value: "/app/config/auth_config.json"
           volumeMounts:
             - name: auth-config
-              mountPath: /app/config
+              mountPath: /app/env
 
       volumes:
         - name: auth-config
           emptyDir: {}
-      {{- range .Values.tenants }}
+        {{- range .Values.tenants }}
         - name: {{ .name }}-tenant-secret
           secret:
             secretName: {{ .name }}-tenant-secret
             items:
               - key: ewebPortalSecret
                 path: ewebPortalSecret
-      {{- end }}
+        {{- end }}
