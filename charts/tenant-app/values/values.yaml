@@ -11,6 +11,7 @@ tenants:
   - name: bar
   - name: ewebtest
   - name: demo
+  - name: test
 cluster:
   name: eweb
 atlas:
