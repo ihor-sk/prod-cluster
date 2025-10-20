@@ -23,13 +23,14 @@ spec:
             - -c
             - |
               mkdir -p /app/env
-              echo -n "AUTH_CONFIG='" > /app/env/.env.local
-              echo -n "[" >> /app/env/.env.local
+              echo -n "AUTH_CONFIG='[" > /app/env/.env.local
               {{- $lastIndex := sub (len .Values.tenants) 1 }}
               {{- range $i, $t := .Values.tenants }}
               VALUE=$(cat /secrets/{{ $t.name }}/ewebPortalSecret)
               echo -n "{\"name\": \"{{ $t.name }}\", \"secret\": \"${VALUE}\"}" >> /app/env/.env.local
-              {{- if ne $i $lastIndex }},{{ end }}
+              {{- if ne $i $lastIndex }}
+              echo -n "," >> /app/env/.env.local
+              {{- end }}
               {{- end }}
               echo "]'" >> /app/env/.env.local
           volumeMounts:
