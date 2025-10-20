@@ -22,20 +22,23 @@ spec:
             - /bin/sh
             - -c
             - |
+              mkdir -p /app/config
               echo "[" > /app/config/auth_config.json
               {{- $lastIndex := sub (len .Values.tenants) 1 }}
               {{- range $i, $t := .Values.tenants }}
-              SECRET_VALS=""
-              {{- range $k := $.Values.global.tenantKeys }}
-              {{- if eq $k "ewebPortalSecret" }}
-              SECRET=$(cat /secrets/{{ $t.name }}/{{ $k }})
-              SECRET_VALS=$SECRET
-              {{- end }}
-              {{- end }}
-              echo "{\"name\": \"{{ $t.name }}\", \"secret\": \"${SECRET_VALS}\"}" >> /app/config/auth_config.json
+              VALUE=$(cat /secrets/{{ $t.name }}/ewebPortalSecret)
+              echo "{\"name\": \"{{ $t.name }}\", \"secret\": \"${VALUE}\"}" >> /app/config/auth_config.json
               {{- if ne $i $lastIndex }},{{ end }}
               {{- end }}
               echo "]" >> /app/config/auth_config.json
+          volumeMounts:
+            - name: auth-config
+              mountPath: /app/config
+            {{- range .Values.tenants }}
+            - name: {{ .name }}-tenant-secret
+              mountPath: /secrets/{{ .name }}
+              readOnly: true
+            {{- end }}
 
       containers:
         - name: eweb-client-portal
@@ -55,10 +58,7 @@ spec:
             - name: EWEB_DOMAIN
               value: "ewebsystems.net"
             - name: AUTH_CONFIG
-              valueFrom:
-                configMapKeyRef:
-                  name: client-portal-auth
-                  key: auth_config.json
+              value: "/app/config/auth_config.json"
           volumeMounts:
             - name: auth-config
               mountPath: /app/config
@@ -66,8 +66,11 @@ spec:
       volumes:
         - name: auth-config
           emptyDir: {}
-        {{- range .Values.tenants }}
+      {{- range .Values.tenants }}
         - name: {{ .name }}-tenant-secret
           secret:
             secretName: {{ .name }}-tenant-secret
-        {{- end }}
+            items:
+              - key: ewebPortalSecret
+                path: ewebPortalSecret
+      {{- end }}
