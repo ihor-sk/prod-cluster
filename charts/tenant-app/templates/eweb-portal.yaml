@@ -23,10 +23,11 @@ spec:
             - -c
             - |
               echo "[" > /app/config/auth_config.json
-              {{- range $t := .Values.tenants }}
-              VALUE=$(cat /secrets/{{ $t.name }}/secret)
-              echo '{"name": "{{ $t.name }}", "secret": "'"$VALUE"'"}' >> /app/config/auth_config.json
-
+              {{- $lastIndex := sub (len .Values.tenants) 1 }}
+              {{- range $i, $t := .Values.tenants }}
+              SECRET=$(cat /secrets/{{ $t.name }}/secret)
+              echo "{\"name\": \"{{ $t.name }}\", \"secret\": \"${SECRET}\"}" >> /app/config/auth_config.json
+              {{- if ne $i $lastIndex }},{{ end }}
               {{- end }}
               echo "]" >> /app/config/auth_config.json
           volumeMounts:
