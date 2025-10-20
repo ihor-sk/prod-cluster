@@ -64,8 +64,6 @@ spec:
               value: "https://user-management.ewebsystems.net/realms/"
             - name: EWEB_DOMAIN
               value: "ewebsystems.net"
-            - name: AUTH_CONFIG
-              value: "/app/config/auth_config.json"
           volumeMounts:
             - name: auth-config
               mountPath: /app/env
