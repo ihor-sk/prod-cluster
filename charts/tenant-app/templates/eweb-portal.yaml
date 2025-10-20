@@ -1,15 +1,3 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: client-portal-config
-  namespace: eweb
-data:
-  NEXT_PUBLIC_EWEB2_URL: "https://api.ewebsystems.net"
-  KEYCLOAK_CLIENT_ID: "eweb-client-portal"
-  KEYCLOAK_ISSUER: "https://user-management.ewebsystems.net/realms/"
-  EWEB_DOMAIN: "ewebsystems.net"
-  AUTH_CONFIG: '[{ "name": "foo", "secret": "LB64PXh9B0Y2nOaDqg7QPPGud8rp3It1" }, { "name": "bar", "secret": "rQb9JMtDg8EnrDjHFob5nLqZS5kbLeej" }]'
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,6 +15,28 @@ spec:
       labels:
         app: eweb-client-portal
     spec:
+      initContainers:
+        - name: build-auth-config
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "[" > /app/config/auth_config.json
+              {{- range $t := .Values.tenants }}
+              VALUE=$(cat /secrets/{{ $t.name }}/secret)
+              echo '{"name": "{{ $t.name }}", "secret": "'"$VALUE"'"}' >> /app/config/auth_config.json
+
+              {{- end }}
+              echo "]" >> /app/config/auth_config.json
+          volumeMounts:
+            - name: auth-config
+              mountPath: /app/config
+            {{- range $t := .Values.tenants }}
+            - name: {{ $t.name }}-tenant-secret
+              mountPath: /secrets/{{ $t.name }}
+              readOnly: true
+            {{- end }}
       containers:
         - name: eweb-client-portal
           imagePullPolicy: Always
@@ -35,23 +45,29 @@ spec:
             - name: http
               containerPort: 3000
               protocol: "TCP"
-          envFrom:
-            - configMapRef:
-                name: client-portal-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: eweb-client-portal
-  namespace: eweb
-  labels:
-    app: eweb-client-portal
-spec:
-  type: ClusterIP
-  ports:
-    - port: 3000
-      targetPort: "http"
-      name: http
-      protocol: "TCP"
-  selector:
-    app: eweb-client-portal
+          env:
+            - name: NEXT_PUBLIC_EWEB2_URL
+              value: "https://api.ewebsystems.net"
+            - name: KEYCLOAK_CLIENT_ID
+              value: "eweb-client-portal"
+            - name: KEYCLOAK_ISSUER
+              value: "https://user-management.ewebsystems.net/realms/"
+            - name: EWEB_DOMAIN
+              value: "ewebsystems.net"
+            - name: AUTH_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  name: client-portal-auth
+                  key: auth_config.json
+          volumeMounts:
+            - name: auth-config
+              mountPath: /app/config
+
+      volumes:
+        - name: auth-config
+          emptyDir: {}
+        {{- range .Values.tenants }}
+        - name: {{ .name }}-tenant-secret
+          secret:
+            secretName: {{ .name }}-tenant-secret
+        {{- end }}
