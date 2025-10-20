@@ -14,6 +14,7 @@ tenants:
   - name: test
   - name: cat
   - name: asdhfjdh
+  - name: yyy
 cluster:
   name: eweb
 atlas:
