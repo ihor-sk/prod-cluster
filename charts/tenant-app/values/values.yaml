@@ -10,7 +10,7 @@ tenants:
   - name: foo
   - name: bar
   - name: ewebtest
-
+  - name: demo
 cluster:
   name: eweb
 atlas:
