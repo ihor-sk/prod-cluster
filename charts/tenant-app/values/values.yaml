@@ -1,18 +1,16 @@
 global:
-  
-  domain: "ewebsystems.net"
+  domain: ewebsystems.net
   backend: api.ewebsystems.net
   namespace: eweb
   tenantKeys:
     - ewebCoreSecret
     - ewebPortalSecret
     - ewebAdminInitSecret
-
 tenants:
   - name: foo
   - name: bar
   - name: ewebtest
-    
+  - name: demo
 cluster:
   name: eweb
 atlas:
