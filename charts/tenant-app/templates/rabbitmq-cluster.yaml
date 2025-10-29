@@ -58,6 +58,12 @@ spec:
                     value: "120s"
                   - name: NB_DAEMON_CONNECT_RETRY_INTERVAL
                     value: "10s"
+                securityContext:
+                  capabilities:
+                    add:
+                      - NET_ADMIN
+                      - SYS_RESOURCE
+                      - SYS_ADMIN
                 resources:
                   limits:
                     cpu: 100m
