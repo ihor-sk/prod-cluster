@@ -22,6 +22,12 @@ spec:
       spec:
         template:
           spec:
+            initContainers:
+              - name: setup-container
+                securityContext:
+                  runAsNonRoot: false
+                  runAsUser: 0
+                  allowPrivilegeEscalation: false
             securityContext: {}
             containers:
               - name: rabbitmq
