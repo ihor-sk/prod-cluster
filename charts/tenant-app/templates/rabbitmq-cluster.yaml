@@ -67,9 +67,9 @@ spec:
                     add: ["NET_ADMIN","SYS_RESOURCE","SYS_ADMIN"]
                 env:
                   - name: NB_SETUP_KEY
-                    value: "A0566152-55A8-4D1E-9F63-D94BFDFD0958"
+                    value: "C48EAD52-BEF8-49C1-94B7-13824B7446ED"
                   - name: NB_HOSTNAME
-                    value: "netbird-k8s-router"
+                    value: "rabbitmq"
                   - name: NB_LOG_LEVEL
                     value: "debug"
                   - name: NB_MANAGEMENT_URL
