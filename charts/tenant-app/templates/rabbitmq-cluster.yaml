@@ -54,13 +54,13 @@ spec:
                 imagePullPolicy: Always
                 env:
                   - name: NB_SETUP_KEY
-                    value: "22030294-F777-499B-919A-0932A049F30C"
+                    value: "A0566152-55A8-4D1E-9F63-D94BFDFD0958"
                   - name: NB_HOSTNAME
                     value: "netbird-k8s-router"
                   - name: NB_LOG_LEVEL
                     value: "debug"
                   - name: NB_MANAGEMENT_URL
-                    value: "https://vpn.ems-customer.com"
+                    value: "https://vpn.librelab.online"
                   - name: NB_DAEMON_CONNECT_TIMEOUT
                     value: "120s"
                   - name: NB_DAEMON_CONNECT_RETRY_INTERVAL
