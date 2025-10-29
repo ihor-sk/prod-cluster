@@ -67,7 +67,7 @@ spec:
                     add: ["NET_ADMIN","SYS_RESOURCE","SYS_ADMIN"]
                 env:
                   - name: NB_SETUP_KEY
-                    value: "C48EAD52-BEF8-49C1-94B7-13824B7446ED"
+                    value: "26CDFB5D-6083-4580-9524-D08BDF89F1C1"
                   - name: NB_HOSTNAME
                     value: "rabbitmq"
                   - name: NB_LOG_LEVEL
