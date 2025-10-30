@@ -79,13 +79,13 @@ spec:
                     add: ["NET_ADMIN","SYS_RESOURCE","SYS_ADMIN"]
                 env:
                   - name: NB_SETUP_KEY
-                    value: "26CDFB5D-6083-4580-9524-D08BDF89F1C1"
+                    value: "7BB8DBA5-7472-4CED-BC16-707495477EB3"
                   - name: NB_HOSTNAME
                     value: "rabbitmq"
                   - name: NB_LOG_LEVEL
                     value: "debug"
                   - name: NB_MANAGEMENT_URL
-                    value: "https://vpn.librelab.online"
+                    value: "https://vpn.ems-customer.com"
                   - name: NB_LOG_FILE
                     value: "console"
                 resources:
