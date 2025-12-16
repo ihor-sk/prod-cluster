@@ -2,8 +2,8 @@ grafana:
   enabled: true
   admin:
     existingSecret: grafana-admin
-    userKey: admin-user
-    passwordKey: admin-password
+    userKey: user
+    passwordKey: password
   persistence:
     enabled: true
     type: pvc
@@ -20,7 +20,6 @@ grafana:
       version: 1
       jsonData:
         maxLines: 1000
-
 prometheus:
   prometheusSpec:
     retention: 15d
