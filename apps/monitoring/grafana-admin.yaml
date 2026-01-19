@@ -1,0 +1,28 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: grafana-admin
+  namespace: monitoring
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: secret-store
+    kind: ClusterSecretStore
+  target:
+    name: grafana-admin
+    creationPolicy: Owner
+    template:
+      type: Opaque
+      engineVersion: v2
+      data:
+        user: "{{ .grafanaAdminUser }}"
+        password: "{{ .grafanaAdminPassword }}"
+  data:
+    - secretKey: grafanaAdminUser
+      remoteRef:
+        key: dev/eweb/admin
+        property: grafanaAdminUser
+    - secretKey: grafanaAdminPassword
+      remoteRef:
+        key: dev/eweb/admin
+        property: grafanaAdminPassword
