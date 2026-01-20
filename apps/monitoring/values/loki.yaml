@@ -1,4 +1,6 @@
 loki:
+  chunksCache:
+    enabled: false
   commonConfig:
     replication_factor: 1
   schemaConfig:
