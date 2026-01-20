@@ -1,6 +1,12 @@
 chunksCache:
   enabled: false
   
+serviceAccount:
+  create: true
+  name: monitoring-kube-prometheus-stack-loki
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::827352852175:role/loki-irsa-dev
+
 loki:
   chunksCache:
     enabled: false
