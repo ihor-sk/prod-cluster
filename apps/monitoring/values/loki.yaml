@@ -1,5 +1,7 @@
 chunksCache:
   enabled: false
+lokiCanary:
+  enabled: false
   
 serviceAccount:
   create: true
@@ -8,6 +10,8 @@ serviceAccount:
     eks.amazonaws.com/role-arn: arn:aws:iam::827352852175:role/loki-irsa-dev
 
 loki:
+  extraArgs:
+    - -log.level=warn
   chunksCache:
     enabled: false
   memcachedChunks:
