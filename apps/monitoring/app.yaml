@@ -12,19 +12,30 @@ spec:
   sources:
     - repoURL: https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
-      targetRevision: "80.4.1"
+      targetRevision: "81.0.0"
       helm:
         releaseName: monitoring
         valueFiles:
-          - apps/monitoring/values/kube-prometheus-stack.values.yaml
-
-    - repoURL: git@github.com:ihor-sk/prod-cluster.git
-      targetRevision: main
+          - $values/apps/monitoring/values/kube-prometheus-stack.values.yaml
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: loki
+      targetRevision: "6.49.0"
+      helm:
+        valueFiles:
+          - $values/apps/monitoring/values/loki.yaml
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: alloy
+      targetRevision: "1.5.2"
+      helm:
+        valueFiles:
+          - $values/apps/monitoring/values/alloy.yaml
+    - repoURL: https://github.com/ihor-sk/prod-cluster.git
+      targetRevision: dev
       ref: values
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
+      - ServerSideApply=true
       - CreateNamespace=true
