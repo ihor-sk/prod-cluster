@@ -1,7 +1,5 @@
 chunksCache:
   enabled: false
-lokiCanary:
-  enabled: false
   
 serviceAccount:
   create: true
