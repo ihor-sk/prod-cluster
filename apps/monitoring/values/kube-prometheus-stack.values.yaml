@@ -30,3 +30,25 @@ prometheus:
           resources:
             requests:
               storage: 30Gi
+alloy:
+  enabled: true
+  config: |
+    logging {
+      level  = "info"
+      format = "logfmt"
+    }
+
+    discovery.kubernetes "pods" {
+      role = "pod"
+    }
+
+    loki.source.kubernetes "pods" {
+      targets    = discovery.kubernetes.pods.targets
+      forward_to = [loki.write.default.receiver]
+    }
+
+    loki.write "default" {
+      endpoint {
+        url = "http://monitoring-kube-prometheus-stack-loki:3100/loki/api/v1/push"
+      }
+    }

@@ -23,12 +23,12 @@ spec:
       helm:
         valueFiles:
           - $values/apps/monitoring/values/loki.yaml
-    - repoURL: https://grafana.github.io/helm-charts
-      chart: alloy
-      targetRevision: "1.5.2"
-      helm:
-        valueFiles:
-          - $values/apps/monitoring/values/alloy.yaml
+#    - repoURL: https://grafana.github.io/helm-charts
+#      chart: alloy
+#      targetRevision: "1.5.2"
+#      helm:
+#        valueFiles:
+#          - $values/apps/monitoring/values/alloy.yaml
     - repoURL: https://github.com/ihor-sk/prod-cluster.git
       targetRevision: dev
       ref: values
