@@ -21,7 +21,6 @@ grafana:
       allow_sign_up: true
       auto_login: true
       client_id: grafana
-      client_secret: ""
       scopes: openid email profile roles
       auth_url: https://user-management.ewebsystems.net/realms/emotions/protocol/openid-connect/auth
       token_url: https://user-management.ewebsystems.net/realms/emotions/protocol/openid-connect/token
