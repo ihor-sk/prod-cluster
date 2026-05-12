@@ -93,6 +93,16 @@ alloy:
       loki.process "pod_logs" {
         stage.cri {}
 
+        stage.match {
+          selector = "{namespace=\"eweb\", container=\"eweb-core\"}"
+
+          stage.multiline {
+            firstline     = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z\\s+(TRACE|DEBUG|INFO|WARN|ERROR)\\s+"
+            max_wait_time = "3s"
+            max_lines     = 512
+          }
+        }
+
         stage.labels {
           values = {
             stream = "",
